@@ -1,6 +1,7 @@
 # Imports
 import random
 import pandas
+import matplotlib.pyplot as plt
 
 # Constants
 POPULATION_SIZE = 20
@@ -22,6 +23,8 @@ def get_chromosome():
     return chromosome
 
 def cal_fitness(chromosome):
+    if (not is_valid(chromosome)):
+        return 0
     num_beneficiary = 0
     sum_eco_fitness = 0
     num_srcitizens_kids = 0
@@ -73,6 +76,7 @@ def generate_initial_population():
             i += 1
     return population
 
+# Uniform crossover
 def crossover (parent1, parent2):
     child_chromosome = []
     for i in range(NUM_VICTIMS):
@@ -101,15 +105,19 @@ def run_ga():
     population = generate_initial_population()
     pvs_avg_fitness = 0
     new_avg_fitness = find_population_fitness(population)
+    fitness = []
+    fitness.append(new_avg_fitness)
     print("Generation: 0" + " Fitness: " + str(new_avg_fitness))
+    population.sort()
     while (abs(new_avg_fitness - pvs_avg_fitness) > 0.001):       
-        population.sort()
+        
         new_generation = []
         
         # Elitism, i.e, 10% of fittest population sent to next gen
         size = int(0.1 * POPULATION_SIZE)
         for i in range(size):
             new_generation.append(population[i])
+
         # Rest 90% formed by mating amongst the fittest 50%
         size = int(0.9 * POPULATION_SIZE)
         for i in range(size):
@@ -118,14 +126,23 @@ def run_ga():
             r = random.randint(0,POPULATION_SIZE/2)
             parent2 = population[r]
             new_generation.append(crossover(parent1, parent2))
+
         population = new_generation
         pvs_avg_fitness = new_avg_fitness
         new_avg_fitness = find_population_fitness(population)
         generation += 1
+        fitness.append(new_avg_fitness)
         print("Generation: " + str(generation) + " Fitness: " + str(new_avg_fitness))
+        population.sort()
+
     print("Solution chromosome: ")
     print(population[0].chromosome)
-
+    plt.plot(fitness)
+    plt.xlabel('Generation') 
+    plt.ylabel('Fitness')  
+    plt.title('Fitness Of the Solution Over Different Generations')
+    plt.show() 
+    
 run_ga()
 
 
