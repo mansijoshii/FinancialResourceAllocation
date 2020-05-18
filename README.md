@@ -25,9 +25,9 @@ Ob4 =  Σcost[i] ∀ i ϵ S
 
 Ob5 = Σloss[i] ∀ i ϵ S
 
-Fitness Of a Chromosome
+Fitness Of a Chromosome :
+Since we have to maximise Ob1,3,4,5 and minimise Ob2
 
-Since we’ve to maximise Ob1,3,4,5 and minimise Ob2
 Fitness = (Ob1 + Ob3 + Ob4 + Ob5) / (1 + Ob2)
 
 Constraints: Total aiding amount should be less than or equal to the amount of money at disposal.
