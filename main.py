@@ -26,6 +26,8 @@ def cal_fitness(chromosome):
     sum_eco_fitness = 0
     num_srcitizens_kids = 0
     total_amount_given = 0
+    loss = 0
+    total_loss = 0
     for i in range(NUM_VICTIMS):
         if (chromosome[i] != 0):
             num_beneficiary += 1
@@ -33,10 +35,13 @@ def cal_fitness(chromosome):
             if (victims[i][3] < 18 or victims[i][3] >= 60):
                 num_srcitizens_kids += 1
             total_amount_given += amount_given[chromosome[i]]
+            loss += victims[i][4]
+        total_loss += victims[i][4]
     # Normalisation of variables
     total_amount_given = (total_amount_given * NUM_VICTIMS)/AMOUNT_IN_AID
     sum_eco_fitness = sum_eco_fitness/MAX_ECO_FITNESS
-    return float((num_beneficiary + num_srcitizens_kids + total_amount_given)/(1+sum_eco_fitness))
+    loss = loss / total_loss
+    return float((num_beneficiary + num_srcitizens_kids + total_amount_given + loss)/(1+sum_eco_fitness))
 
 class Individual:
     def __init__(self, chromosome=None):
